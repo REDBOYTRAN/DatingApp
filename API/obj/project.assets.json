@@ -1256,23 +1256,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\thinkpad pro\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\tpquang\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "G:\\HOC TAP\\Web\\Course\\DatingApp\\api\\API.csproj",
+      "projectUniqueName": "D:\\Course\\DatingApp\\api\\API.csproj",
       "projectName": "API",
-      "projectPath": "G:\\HOC TAP\\Web\\Course\\DatingApp\\api\\API.csproj",
-      "packagesPath": "C:\\Users\\thinkpad pro\\.nuget\\packages\\",
-      "outputPath": "G:\\HOC TAP\\Web\\Course\\DatingApp\\api\\obj\\",
+      "projectPath": "D:\\Course\\DatingApp\\api\\API.csproj",
+      "packagesPath": "C:\\Users\\tpquang\\.nuget\\packages\\",
+      "outputPath": "D:\\Course\\DatingApp\\api\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\thinkpad pro\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\tpquang\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -1327,6 +1323,12 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[5.0.15, 5.0.15]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -1335,7 +1337,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
       }
     }
   }
