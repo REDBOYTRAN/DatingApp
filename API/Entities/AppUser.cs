@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace API.Entities
 {
+    //test
     public class AppUser
     {
         public int Id { get; set; }
