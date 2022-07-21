@@ -9,6 +9,7 @@ import { User } from './../_models/user';
 export class AccountService {
   baseUrl = 'https://localhost:5001/api/';
   private currentUserSource = new ReplaySubject<User>(1);
+  currentUser$ = this.currentUserSource.asObservable();
   
 
   constructor(private http: HttpClient) { }
@@ -18,13 +19,19 @@ export class AccountService {
       map((reponse: User) => {
         const user = reponse;
         if(user) {
-          localStorage.setItem('user', JSON.stringify(user))
+          localStorage.setItem('user', JSON.stringify(user));
+          this.currentUserSource.next(user);
         }
       })
     )
   }
 
+  setCurrentUser(user: User) {
+    this.currentUserSource.next(user);
+  } 
+
   logout() {
     localStorage.removeItem('user');
+    this.currentUserSource.next(null);
   }
 }
