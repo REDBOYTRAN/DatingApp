@@ -10,10 +10,12 @@ import { AccountService } from './_services/account.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'The Dating App';
   users: any;
 
-  constructor(private http: HttpClient, private accountService: AccountService) {}
+  constructor(
+    private http: HttpClient, 
+    private accountService: AccountService
+  ) {}
   
   ngOnInit() {
     this.getUsers();
@@ -26,7 +28,7 @@ export class AppComponent implements OnInit {
   }
 
   getUsers() {
-    this.http.get('https://localhost:5001/api/users').subscribe({
+    this.http.get(this.accountService.baseUrl + 'users').subscribe({
       next: response => this.users = response,
       error: error => console.log(error)
     })
