@@ -8,16 +8,18 @@ import { AccountService } from '../_services/account.service';
 })
 export class RegisterComponent implements OnInit {
 
-  @Input() usersFromHomeComponent: any;
   @Output() cancelRegister = new EventEmitter();
 
   model: any = {};
-  constructor() { }
+  constructor(private accountService: AccountService) { }
 
   ngOnInit(): void {
   }
 
   register() {
+    this.accountService.register(this.model).subscribe(response => {
+      this.cancel();
+    })
   }
 
   cancel() {
