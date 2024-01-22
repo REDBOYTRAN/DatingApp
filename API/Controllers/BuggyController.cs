@@ -37,7 +37,7 @@ namespace API.Controllers
 
             var thingToReturn = thing.ToString();
 
-            return BadRequest("This is not a good request!");
+            return thingToReturn;
         }
 
         [HttpGet("bad-request")]
