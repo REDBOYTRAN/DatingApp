@@ -1,4 +1,6 @@
+using System;
 using System.Text;
+using System.Threading.Tasks;
 using API.Data;
 using API.Extensions;
 using API.Interfaces;
@@ -11,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace API
@@ -34,7 +37,7 @@ namespace API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public async Task ConfigureAsync(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -58,6 +61,21 @@ namespace API
             {
                 endpoints.MapControllers();
             });
+
+            using var scope = app.Services.CreateScope();
+            var services  = scope.ServiceProvider;
+            try
+            {
+                var context = services.GetRequiredService<DataContext>();
+                await context.Database.MigrateAsync();
+                await Seed.SeedUsers(context);
+            }
+            catch (Exception ex)
+            {
+                var logger = services.GetService<ILogger<Program>>();
+                logger.LogError(ex, "An error occured during migration");
+            }
+
         }
     }
 }
