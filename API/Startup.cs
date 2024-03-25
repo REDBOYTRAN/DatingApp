@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using System.Threading.Tasks;
 using API.Data;
 using API.Extensions;
 using API.Interfaces;
@@ -36,7 +37,11 @@ namespace API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+<<<<<<< HEAD
         public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+=======
+        public async Task ConfigureAsync(IApplicationBuilder app, IWebHostEnvironment env)
+>>>>>>> 53a1d191fc43ef36f5845036971910ab5ae52f46
         {
             if (env.IsDevelopment())
             {
