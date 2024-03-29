@@ -2,3 +2,26 @@
 * {
     font-family: Roboto, sans-serif;
 }
+
+/* .tab-panel {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 4px;
+} */
+
+.member-tabset>.nav-tabs>li.open>a,
+.member-tabset>.nav-tabs>li:hover>a {
+    border: 0;
+    background: #c2dcff !important;
+    color: #647dd8;
+}
+
+.member-tabset>.nav-tabs>li.active>a:hover {
+    background: #4c94f3 !important;
+    color: #fff;
+}
+
+.gallery {
+    height: 700px;
+    background-color: var(--bs-body-bg);
+}
