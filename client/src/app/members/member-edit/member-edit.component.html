@@ -29,8 +29,7 @@
         </div>
       </div>
       <div class="card-footer">
-        <button [disabled]="!editForm.dirty" type="submit" form="editForm" class="btn btn-success col-12">Save
-          Changes</button>
+        <button (click)="updateMember()" class="btn btn-success col-12" form="editForm" type="submit" [disabled]="!editForm.dirty">Save Changes</button>
       </div>
     </div>
   </div>
