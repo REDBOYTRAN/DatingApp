@@ -3,8 +3,8 @@
     <h1>Your profile</h1>
   </div>
   <div class="col-8 mt-2">
-    <div class="alert alert-info pb-0" *ngIf="editForm.dirty">
-      <p><strong>Information: </strong>You have made changes. Any unsaved changes will be lost</p>
+    <div class="alert alert-info" *ngIf="editForm.dirty">
+      <p class="mb-0"><strong>Information: </strong>You have made changes. Any unsaved changes will be lost</p>
     </div>
   </div>
   <div class="col-4">
@@ -29,7 +29,8 @@
         </div>
       </div>
       <div class="card-footer">
-        <button (click)="updateMember()" class="btn btn-success col-12" form="editForm" type="submit" [disabled]="!editForm.dirty">Save Changes</button>
+        <button class="btn btn-success col-12" form="editForm" type="submit" [disabled]="!editForm.dirty">Save
+          Changes</button>
       </div>
     </div>
   </div>
