@@ -7,8 +7,12 @@ namespace API.Helpers
 {
     public class PagninationHeader
     {
-        public PagninationHeader()
+        public PagninationHeader(int CurrentPage, int ItemsPerPage, int TotalItems, int TotalPages)
         {
+            CurrentPage = CurrentPage;
+            ItemsPerPage = ItemsPerPage;
+            TotalItems = TotalItems;
+            TotalPages = TotalPages;
         }
 
         public int CurrentPage { get; set; }
