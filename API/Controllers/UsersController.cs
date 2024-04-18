@@ -13,6 +13,7 @@ using System.Security.Claims;
 using API.Extensions;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
+using API.Helpers;
 
 namespace API.Controllers
 {
@@ -30,9 +31,11 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
+        public async Task<ActionResult<PagedList<MemberDto>>> GetUsers([FromQuery] UserParams userParams)
         {
-            return Ok(await _userRepository.GetMembersAsync());
+            var users = await _userRepository.GetMembersAsync(userParams);
+            Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages));
+            return Ok(users);
         }
 
         [HttpGet("{username}")]
@@ -108,24 +111,26 @@ namespace API.Controllers
         }
 
         [HttpDelete("delete-photo/{photoId}")]
-        public async Task<ActionResult> DeletePhoto(int photoId) {
+        public async Task<ActionResult> DeletePhoto(int photoId)
+        {
             var user = await _userRepository.GetUserByUserNameAsync(User.GetUsername());
-            
+
             var photoToDelete = user.Photos.FirstOrDefault(x => x.Id == photoId);
 
             if (photoToDelete == null) return NotFound();
 
             if (photoToDelete.IsMain) return BadRequest("You can not delete your main photo");
-            
-            if (photoToDelete.PublicId != null) {
+
+            if (photoToDelete.PublicId != null)
+            {
                 var result = await _photoService.DeletePhotoAsync(photoToDelete.PublicId);
-                if(result.Error != null) return BadRequest(result.Error.Message);
+                if (result.Error != null) return BadRequest(result.Error.Message);
             }
 
             user.Photos.Remove(photoToDelete);
 
-            if(await _userRepository.SaveAllAsync()) return Ok();
-            
+            if (await _userRepository.SaveAllAsync()) return Ok();
+
             return BadRequest("Failed to delete photo");
         }
     }
