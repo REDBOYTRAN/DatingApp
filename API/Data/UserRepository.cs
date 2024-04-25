@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace API.Data
         {
             _mapper = mapper;
             _context = context;
-            
+
         }
 
         public async Task<MemberDto> GetMemberAsync(string username)
@@ -32,9 +33,14 @@ namespace API.Data
 
         public async Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams)
         {
+
+            var minDob = DateTime.Today.AddYears(-userParams.MaxAge - 1);
+            var maxDob = DateTime.Today.AddYears(-userParams.MinAge);
+
             var query = _context.Users
                         .AsQueryable()
-                        .Where(u => u.UserName != userParams.CurrentUsername && u.Gender == userParams.Gender)
+                        .Where(u => u.UserName != userParams.CurrentUsername && u.Gender == userParams.Gender
+                            && u.DateOfBirth >= minDob && u.DateOfBirth <= maxDob)
                         .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
                         .AsNoTracking();
 
