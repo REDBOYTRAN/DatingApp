@@ -2,9 +2,11 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Member } from '../_models/member';
-import { map, of } from 'rxjs';
+import { map, of, take, tap } from 'rxjs';
 import { PaginatedResult } from '../_models/pagination';
 import { UserParams } from '../_models/userParams';
+import { AccountService } from './account.service';
+import { User } from '../_models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -12,14 +14,39 @@ import { UserParams } from '../_models/userParams';
 export class MembersService {
   baseUrl = environment.apiUrl;
   members: Member[] = [];
+<<<<<<< HEAD
   memberCache = new Map();
+  userParams: UserParams | undefined;
+  user: User | undefined;
+=======
+>>>>>>> parent of 900fbb6 ([SS13] Caching for members)
   
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private accountService: AccountService) {
+    this.accountService.currentUser$.pipe(take(1)).subscribe(user => {
+      if(user) {
+        this.userParams = new UserParams(user);
+        this.user = user;
+      }
+    })
+  }
   
-  getMembers(userParams: UserParams) {
-    const response = this.memberCache.get(Object.values(userParams).join('-'));
-    if(response) return of(response);
+  getUserParams() {
+    return this.userParams;
+  }
 
+  setUserParams(userParams: UserParams) {
+    this.userParams = userParams;
+  }
+
+  resetUserParams() {
+    if (this.user) {
+      this.userParams = new UserParams(this.user);
+      return this.userParams;
+    }
+    return;
+  }
+
+  getMembers(userParams: UserParams) {
     let params = this.getPaginationHeaders(userParams.pageNumber, userParams.pageSize);
 
     params = params.append('minAge', userParams.minAge);
@@ -27,14 +54,37 @@ export class MembersService {
     params = params.append('gender', userParams.gender);
     params = params.append('orderBy', userParams.orderBy);
 
+<<<<<<< HEAD
     return this.getPaginatedResult<Member[]>(this.baseUrl + 'users', params).pipe(
-      map(response => {
-        this.memberCache.set(Object.values(userParams).join('-'), response);
-        return response;
-      })
+      tap(response => this.memberCache.set(Object.values(userParams).join('-'), response))
     );
+=======
+    return this.getPaginatedResult<Member[]>(this.baseUrl + 'users', params);
+>>>>>>> parent of 900fbb6 ([SS13] Caching for members)
   }
-  
+
+  getMember(username: string) {
+    const member = [...this.memberCache.values()]
+      .reduce((arr, elem) => arr.concat(elem.result), [])
+      .find((member: Member) => member.userName === username);
+
+    if(member) return of(member);
+    
+    return this.http.get<Member>(this.baseUrl + 'users/' + username);
+  }
+
+  updateMember(member: Member) {
+    return this.http.put(this.baseUrl + 'users', member);
+  }
+
+  setMainPhoto(photoId: number) {
+    return this.http.put(this.baseUrl + 'users/set-main-photo/' + photoId, {});
+  }
+
+  deletePhoto(photoId: number) {
+    return this.http.delete(this.baseUrl + 'users/delete-photo/' + photoId);
+  }
+
   private getPaginatedResult<T>(url: string, params: HttpParams) {
     const paginatedResult: PaginatedResult<T> = new PaginatedResult<T>;
     return this.http.get<T>(url, { observe: 'response', params }).pipe(
@@ -58,23 +108,5 @@ export class MembersService {
     params = params.append('pageSize', pageSize.toString());
 
     return params;
-  }
-
-  getMember(username: string) {
-    const member = this.members.find(member => member.userName === username);
-    if(member) return of(member);
-    return this.http.get<Member>(this.baseUrl + 'users/' + username);
-  }
-
-  updateMember(member: Member) {
-    return this.http.put(this.baseUrl + 'users', member);
-  }
-
-  setMainPhoto(photoId: number) {
-    return this.http.put(this.baseUrl + 'users/set-main-photo/' + photoId, {});
-  }
-
-  deletePhoto(photoId: number) {
-    return this.http.delete(this.baseUrl + 'users/delete-photo/' + photoId);
   }
 }

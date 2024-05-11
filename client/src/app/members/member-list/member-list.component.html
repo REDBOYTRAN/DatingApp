@@ -3,7 +3,7 @@
 </div>
 
 <div class="container mt-3" *ngIf="userParams">
-  <form #form="ngForm" class="d-flex mb-3" (ngSubmit)="loadMembers()" autocomplete="off">
+  <form #form="ngForm" class="d-flex mb-3" (ngSubmit)="applyFilters()" autocomplete="off">
     <div class="d-flex mx-2">
       <lable class="col-form-label" style="height: 48px">Age from:</lable>
       <input type="number" class="form-control ms-1" style="width: 80px;" name="minAge" [(ngModel)]="userParams.minAge">
@@ -26,10 +26,12 @@
 
     <div class="col">
       <div class="btn-group float-end">
-        <button type="button" class="btn btn-primary" name="orderBy" [(ngModel)]="userParams.orderBy" (click)="loadMembers()" btnRadio="lastActive">
+        <button type="button" class="btn btn-primary" name="orderBy" [(ngModel)]="userParams.orderBy"
+          (click)="loadMembers()" btnRadio="lastActive">
           Last Active
         </button>
-        <button type="button" class="btn btn-primary" name="orderBy" [(ngModel)]="userParams.orderBy" (click)="loadMembers()" btnRadio="created">
+        <button type="button" class="btn btn-primary" name="orderBy" [(ngModel)]="userParams.orderBy"
+          (click)="loadMembers()" btnRadio="created">
           Newest Members
         </button>
       </div>
