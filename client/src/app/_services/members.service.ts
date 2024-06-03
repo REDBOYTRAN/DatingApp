@@ -14,12 +14,9 @@ import { User } from '../_models/user';
 export class MembersService {
   baseUrl = environment.apiUrl;
   members: Member[] = [];
-<<<<<<< HEAD
   memberCache = new Map();
   userParams: UserParams | undefined;
   user: User | undefined;
-=======
->>>>>>> parent of 900fbb6 ([SS13] Caching for members)
   
   constructor(private http: HttpClient, private accountService: AccountService) {
     this.accountService.currentUser$.pipe(take(1)).subscribe(user => {
@@ -54,13 +51,9 @@ export class MembersService {
     params = params.append('gender', userParams.gender);
     params = params.append('orderBy', userParams.orderBy);
 
-<<<<<<< HEAD
     return this.getPaginatedResult<Member[]>(this.baseUrl + 'users', params).pipe(
       tap(response => this.memberCache.set(Object.values(userParams).join('-'), response))
     );
-=======
-    return this.getPaginatedResult<Member[]>(this.baseUrl + 'users', params);
->>>>>>> parent of 900fbb6 ([SS13] Caching for members)
   }
 
   getMember(username: string) {
