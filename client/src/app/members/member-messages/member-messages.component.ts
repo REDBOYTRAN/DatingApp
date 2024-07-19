@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { TimeagoModule } from 'ngx-timeago';
 import { Message } from 'src/app/_models/message';
 import { MessageService } from 'src/app/_services/message.service';
 
@@ -8,25 +9,18 @@ import { MessageService } from 'src/app/_services/message.service';
   standalone: true,
   templateUrl: './member-messages.component.html',
   styleUrls: ['./member-messages.component.css'],
-  imports: [CommonModule]
+  imports: [CommonModule, TimeagoModule]
 })
 export class MemberMessagesComponent {
 
   @Input() username?: string;
-  messages: Message[] = [];
+  @Input() messages?: Message[] = [];
 
-  constructor(private messageService: MessageService) {}
+  constructor() {}
 
   ngOnInit(): void {
-    this.loadMessages();
   }
 
-  loadMessages() {
-    if(this.username) {
-      this.messageService.getMessageThread(this.username).subscribe(messages => {
-        this.messages = messages;
-      })
-    }
-  }
+  
 
 }
