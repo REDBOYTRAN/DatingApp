@@ -21,17 +21,20 @@ export class MemberDetailComponent implements OnInit {
 
   @ViewChild('memberTabs') memberTabs?: TabsetComponent;
   activeTab?: TabDirective;
-  member: Member | undefined;
+  member: Member = {} as Member;
   images: GalleryItem[] = [];
   messages: Message[] = [];
   constructor(private membersService : MembersService, private route: ActivatedRoute, private messageService: MessageService) { }
 
   ngOnInit(): void {
-    this.loadMember();
+
+    this.route.data.subscribe(data => this.member = data['member']);
 
     this.route.queryParams.subscribe(param => {
       param['tab'] && this.selectTab(param['tab'])
     })
+
+    this.getImages();
   }
 
   selectTab(heading: string) {
@@ -54,15 +57,6 @@ export class MemberDetailComponent implements OnInit {
         this.messages = messages;
       })
     }
-  }
- 
-  loadMember() {
-    var username = this.route.snapshot.paramMap.get('username');
-    if (!username) return;
-    this.membersService.getMember(username).subscribe(member => {
-      this.member = member,
-      this.getImages()
-    });
   }
 
   getImages() {
