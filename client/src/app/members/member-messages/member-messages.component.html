@@ -1,13 +1,13 @@
 <div class="card">
     <div class="card-body">
-        <div *ngIf="messages.length === 0">
+        <div *ngIf="messages.length === 0" class="text-center">
             No messages yet... say hi by using the message box below
         </div>
 
         <ul *ngIf="messages.length > 0" class="chat">
-            <li *ngFor="let message of messages">
+            <li *ngFor="let message of messages; let i = index">
                 <div *ngIf="message.senderUsername !== username" class="d-flex flex-row-reverse">
-                    <span class="chat-img ">
+                    <span class="chat-img">
                         <img class="rounded-circle" 
                             src="{{message.senderPhotoUrl || './assets/user.png'}}" 
                             alt="image of user">
@@ -16,17 +16,16 @@
                         <div class="header">
                             <small class="text-muted">
                                 <span class="fa fa-clock-o"> {{message.messageSent + 'Z' | timeago}}</span>
-                                <span class="text-danger" *ngIf="!message.dateRead 
-                                    && message.senderUsername !== username"> (unread)</span>
-                                <span class="text-success" *ngIf="message.dateRead 
-                                    && message.senderUsername !== username"> (read {{message.dateRead + 'Z' | timeago}})</span>
                             </small>
                         </div>
                         <p class="m-0">{{message.content}}</p>
+                        <small class="text-muted" *ngIf="message.dateRead && getLastReadMessageIndex() === i">
+                            <span class="fa">(seen {{message.dateRead + 'Z' | timeago}})</span>
+                        </small>
                     </div>
                 </div>
                 <div *ngIf="message.senderUsername === username" class="d-flex">
-                    <span class="chat-img ">
+                    <span class="chat-img">
                         <img class="rounded-circle" 
                             src="{{message.senderPhotoUrl || './assets/user.png'}}" 
                             alt="image of user">
@@ -35,10 +34,6 @@
                         <div class="header">
                             <small class="text-muted">
                                 <span class="fa fa-clock-o"> {{message.messageSent + 'Z' | timeago}}</span>
-                                <span class="text-danger" *ngIf="!message.dateRead 
-                                    && message.senderUsername !== username"> (unread)</span>
-                                <span class="text-success" *ngIf="message.dateRead 
-                                    && message.senderUsername !== username"> (read {{message.dateRead + 'Z' | timeago}})</span>
                             </small>
                         </div>
                         <p class="m-0">{{message.content}}</p>
@@ -49,14 +44,15 @@
     </div>
 
     <div class="card-footer">
-        <form autocomplete="off" class="d-flex w-100">
+        <form #messageForm="ngForm" (ngSubmit)="sendMessage()" autocomplete="off" class="d-flex w-100">
             <input
                 name="messageContent"
                 required
+                [(ngModel)]="messageContent"
                 type="text" 
                 class="mr-4 form-control input-sm px-3" 
                 placeholder="Send a private message">
-            <button class="btn btn-primary" type="submit">Send</button>
+            <button [disabled]="!messageForm.valid" class="btn btn-primary" type="submit" cl>Send</button>
         </form>
     </div>
 </div>

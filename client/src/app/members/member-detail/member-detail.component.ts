@@ -19,7 +19,7 @@ import { Message } from 'src/app/_models/message';
 })
 export class MemberDetailComponent implements OnInit {
 
-  @ViewChild('memberTabs') memberTabs?: TabsetComponent;
+  @ViewChild('memberTabs', {static: true}) memberTabs?: TabsetComponent;
   activeTab?: TabDirective;
   member: Member = {} as Member;
   images: GalleryItem[] = [];
@@ -39,7 +39,6 @@ export class MemberDetailComponent implements OnInit {
 
   selectTab(heading: string) {
     if(this.memberTabs) {
-      console.log('tab: ', this.memberTabs);
       this.memberTabs.tabs.find(x => x.heading === heading)!.active = true; // the `!` asserts to the TypeScript compiler that the result of find is not null or undefined.
     }
   }
