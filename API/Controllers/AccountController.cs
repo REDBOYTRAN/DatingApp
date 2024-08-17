@@ -31,14 +31,9 @@ namespace API.Controllers
             if (await UserExists(registerDto.UserName))
                 return BadRequest("Username is already taken");
 
-            //provide the hash algorithm to create the passwordHash
-            using var hmac = new HMACSHA512();
-
             var user = _mapper.Map<AppUser>(registerDto);
 
             user.UserName = registerDto.UserName.ToLower();
-            user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password));
-            user.PasswordSalt = hmac.Key;
 
             _context.Users.Add(user); //tracking this user to EF 
             await _context.SaveChangesAsync(); //save user to database
@@ -59,16 +54,6 @@ namespace API.Controllers
                 .Include(p => p.Photos)
                 .SingleOrDefaultAsync(x => x.UserName == loginDto.Username);
             if (user == null) return Unauthorized("Invalid username");
-
-            using var hmac = new HMACSHA512(user.PasswordSalt);
-
-            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
-
-            for (int i = 0; i < computedHash.Length; i++)
-            {
-                if (computedHash[i] != user.PasswordHash[i])
-                    return Unauthorized("Invalid password");
-            }
 
             return new UserDto
             {
