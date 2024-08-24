@@ -14,6 +14,7 @@ using API.Extensions;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
 using API.Helpers;
+using CloudinaryDotNet.Actions;
 
 namespace API.Controllers
 {
@@ -36,7 +37,8 @@ namespace API.Controllers
             var currentUser = await _userRepository.GetUserByUserNameAsync(User.GetUsername());
             userParams.CurrentUsername = currentUser.UserName;
 
-            if(string.IsNullOrEmpty(userParams.Gender)) {
+            if (string.IsNullOrEmpty(userParams.Gender))
+            {
                 userParams.Gender = currentUser.Gender == "male" ? "female" : "male";
             }
 

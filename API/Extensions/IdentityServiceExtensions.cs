@@ -11,9 +11,11 @@ namespace API.Extensions
 {
     public static class IdentityServiceExtensions
     {
-        public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration config) {
+        public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration config)
+        {
 
-            services.AddIdentityCore<AppUser>(otp => {
+            services.AddIdentityCore<AppUser>(otp =>
+            {
                 otp.Password.RequireNonAlphanumeric = false;
             })
                 .AddRoles<AppRole>()
@@ -21,7 +23,8 @@ namespace API.Extensions
                 .AddEntityFrameworkStores<DataContext>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options => {
+                .AddJwtBearer(options =>
+                {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
@@ -30,6 +33,12 @@ namespace API.Extensions
                         ValidateAudience = false
                     };
                 });
+
+            services.AddAuthorization(otp =>
+            {
+                otp.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
+                otp.AddPolicy("ModeratePhotoRole", policy => policy.RequireRole("Admin", "Moderator"));
+            });
 
             return services;
         }
