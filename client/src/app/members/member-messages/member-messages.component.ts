@@ -16,29 +16,26 @@ export class MemberMessagesComponent {
 
   @ViewChild('messageForm') messageForm?: NgForm;
   @Input() username?: string;
-  @Input() messages?: Message[] = [];
   messageContent = '';
 
-  constructor(private messageService: MessageService) {}
+  constructor(public messageService: MessageService) {}
 
   ngOnInit(): void {
   }
 
   sendMessage() {
     if(!this.username) return;
-    this.messageService.sendMessage(this.username, this.messageContent)
-    .subscribe(message => {
-      this.messages.push(message);
-      this.messageForm.reset();
+    this.messageService.sendMessage(this.username, this.messageContent).then(() => {
+      this.messageForm?.reset();
     });
   }
 
   getLastReadMessageIndex(): number | null {
-    for (let i = this.messages.length - 1; i >= 0; i--) {
-      if (this.messages[i].senderUsername !== this.username && this.messages[i].dateRead) {
-        return i;
-      }
-    }
+    // for (let i = this.messages.length - 1; i >= 0; i--) {
+    //   if (this.messages[i].senderUsername !== this.username && this.messages[i].dateRead) {
+    //     return i;
+    //   }
+    // }
     return null;
   }
   
