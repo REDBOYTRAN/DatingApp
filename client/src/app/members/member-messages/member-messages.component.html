@@ -15,12 +15,12 @@
                     <div class="chat-body px-2">
                         <div class="header">
                             <small class="text-muted">
-                                <span class="fa fa-clock-o"> {{message.messageSent + 'Z' | timeago}}</span>
+                                <span class="fa fa-clock-o"> {{message.messageSent | timeago}}</span>
                             </small>
                         </div>
                         <p class="m-0">{{message.content}}</p>
                         <small class="text-muted" *ngIf="message.dateRead && getLastReadMessageIndex() === i">
-                            <span class="fa">(seen {{message.dateRead + 'Z' | timeago}})</span>
+                            <span class="fa">(seen {{message.dateRead | timeago}})</span>
                         </small>
                     </div>
                 </div>
@@ -33,7 +33,7 @@
                     <div class="chat-body px-2">
                         <div class="header">
                             <small class="text-muted">
-                                <span class="fa fa-clock-o"> {{message.messageSent + 'Z' | timeago}}</span>
+                                <span class="fa fa-clock-o"> {{message.messageSent | timeago}}</span>
                             </small>
                         </div>
                         <p class="m-0">{{message.content}}</p>
